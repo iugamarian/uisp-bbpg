@@ -4,7 +4,7 @@ pkgname=uisp
 pkgnamewantedbin=uisp-bbpg
 pkgver=20050207
 pkgrel=5
-srcdir=$[$(pwd)]/src
+srcdir=$(pwd)/src
 echo ""
 echo "Working in directory:"
 echo ""
