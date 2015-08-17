@@ -1,5 +1,6 @@
 # Contributor: Corrado Primier <bardo@aur.archlinux.org>
 # Maintainer: Laszlo Papp <djszapi2 at gmail com>
+# Adapted for modern Linux distributions: <iuga . marian at gmail com>
 pkgname=uisp
 pkgnamewantedbin=uisp-bbpg
 pkgver=20050207
@@ -35,6 +36,11 @@ echo ""
   patch -p1 -i ${srcdir}/extractpatches/${pkgname}-${pkgver}/debian/patches/30_fix_g++_4.3.dpatch || return 1
   patch -p1 -i ${srcdir}/extractpatches/${pkgname}-${pkgver}/debian/patches/40_fix_g++_4.6.dpatch || return 1
   patch -p1 -i ${srcdir}/extractpatches/uisp-20050207-usb-bbpg-patch.txt || return 1
+# Installing required libraries libusb-dev provides usb.h and libusb-1.0-0-dev is recomended in askubuntu :
+  echo ""
+  echo "Insert your password to install required libusb libraries"
+  echo ""
+  sudo apt-get install -y libusb-dev libusb-1.0-0-dev
 # Avoid busses not used error by using it for no reason
   sed -i 's/busses = usb_get_busses();/busses = usb_get_busses();\n  for (busses = usb_busses; busses; busses = busses->next)\n{\n}\n  busses = usb_get_busses();/g' ${srcdir}/${pkgname}-${pkgver}/src/ftdibb.c
   export CXXFLAGS="-g -Wall -O2 -Wno-narrowing -Wno-unused-result"
@@ -49,7 +55,21 @@ echo ""
   echo ""
   cp ${srcdir}/${pkgname}-${pkgver}/src/uisp ${srcdir}/${pkgname}-${pkgver}
   echo ""
-  echo "Insert your password to install uisp-bbpg /usr/bin"
+  echo "Insert your password to install uisp-bbpg in /usr/bin"
   echo ""
   sudo mv ${srcdir}/${pkgname}-${pkgver}/src/uisp /usr/bin/${pkgnamewantedbin}
   cp ${srcdir}/${pkgname}-${pkgver}/uisp ${srcdir}/${pkgname}-${pkgver}/src
+  echo ""
+  echo "You can now program the programmer:"
+  echo ""
+  echo "cd avrusb500v2-1.5"
+  echo ""
+  echo "Connect the programmer to a usb port."
+  echo ""
+  echo "Repeat the make commands a few times if they give errors:"
+  echo ""
+  echo "sudo make rdfuse"
+  echo ""
+  echo "sudo make load_pre"
+  echo ""
+  
