@@ -1,5 +1,6 @@
 # Contributor: Corrado Primier <bardo@aur.archlinux.org>
 # Maintainer: Laszlo Papp <djszapi2 at gmail com>
+# Adapted for modern Linux distributions: <iuga . marian at gmail com>
 pkgname=uisp
 pkgnamewantedbin=uisp-bbpg
 pkgver=20050207
@@ -8,7 +9,7 @@ pkgdesc="A tool for AVR which can interface to many hardware in-system programme
 arch=('i686' 'x86_64' 'armv6h' 'armv7h')
 url="http://savannah.nongnu.org/projects/uisp/"
 license=('GPL')
-depends=('gcc-libs' 'wget')
+depends=('gcc-libs' 'wget' 'libusb')
 
 source=(http://ftp.de.debian.org/debian/pool/main/u/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz )
 md5sums=('b1e499d5a1011489635c1a0e482b1627')
@@ -40,7 +41,14 @@ build() {
   sed -i 's/busses = usb_get_busses();/busses = usb_get_busses();\n  for (busses = usb_busses; busses; busses = busses->next)\n{\n}\n  busses = usb_get_busses();/g' ${srcdir}/${pkgname}-${pkgver}/src/ftdibb.c
   export CXXFLAGS="-g -Wall -O2 -Wno-narrowing -Wno-unused-result"
   ./configure --prefix=/usr --mandir=/usr/share/man
-  make install || return 1
+  make || return 1
+  cd ${srcdir}/..
+  wget -c -P ${srcdir}/.. http://tuxgraphics.org/common/src2/article07052/avrusb500v2-1.5.tar.gz
+  tar xfvz avrusb500v2-1.5.tar.gz
+  sed -i '#BITBANG_BINARY=.\/bin\/uisp_bbpg\/BITBANG_BINARY=uisp-bbpg/g' avrusb500v2-1.5/Makefile
+  echo ""
+  echo "Edited Makefile in avrusb500v2-1.5 to call uisp-bbpg which is installed in /usr/bin"
+  echo ""
   cp ${srcdir}/${pkgname}-${pkgver}/src/uisp ${srcdir}/${pkgname}-${pkgver}
   mv ${srcdir}/${pkgname}-${pkgver}/src/uisp /usr/bin/${pkgnamewantedbin}
   cp ${srcdir}/${pkgname}-${pkgver}/uisp ${srcdir}/${pkgname}-${pkgver}/src
@@ -60,6 +68,16 @@ package() {
   echo ""
   echo "Installed as /usr/bin/${pkgnamewantedbin}. Do not install the package."
   echo ""
-  echo "Installed as /usr/bin/${pkgnamewantedbin}. Do not install the package."
+  echo "You can now program the programmer:"
+  echo ""
+  echo "cd avrusb500v2-1.5"
+  echo ""
+  echo "Connect the programmer to a usb port."
+  echo ""
+  echo "Repeat the make commands a few times if they give errors:"
+  echo ""
+  echo "sudo make rdfuse"
+  echo ""
+  echo "sudo make load_pre"
   echo ""
 }
