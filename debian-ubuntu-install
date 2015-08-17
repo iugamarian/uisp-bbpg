@@ -4,11 +4,16 @@ pkgname=uisp
 pkgnamewantedbin=uisp-bbpg
 pkgver=20050207
 pkgrel=5
-srcdir="/home/ubuntu-gnome/uisp-bbpg/src"
+srcdir=$[$(pwd)]/src
+echo ""
+echo "Working in directory:"
+echo ""
+echo ${srcdir}
+echo ""
   mkdir ${srcdir}
   cd ${srcdir}
   rm -rf extractpatches
-  wget -c http://ftp.de.debian.org/debian/pool/main/u/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz
+  wget -c -P ${srcdir}/.. http://ftp.de.debian.org/debian/pool/main/u/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz
   wget -c -P ${srcdir}/.. http://http.debian.net/debian/pool/main/u/uisp/uisp_20050207-4.2.diff.gz
   wget -c -P ${srcdir}/.. http://www.tuxgraphics.org/common/src2/article07052/uisp-20050207-usb-bbpg-patch.txt
   mkdir ${srcdir}/extractpatches
@@ -38,8 +43,13 @@ srcdir="/home/ubuntu-gnome/uisp-bbpg/src"
   cd ${srcdir}/..
   wget -c -P ${srcdir}/.. http://tuxgraphics.org/common/src2/article07052/avrusb500v2-1.5.tar.gz
   tar xfvz avrusb500v2-1.5.tar.gz
-  cp ${srcdir}/${pkgname}-${pkgver}/src/uisp ${srcdir}/${pkgname}-${pkgver}
-  mv ${srcdir}/${pkgname}-${pkgver}/src/uisp ${srcdir}/../avrusb500v2-1.5/bin/${pkgnamewantedbin}
-  cp ${srcdir}/${pkgname}-${pkgver}/uisp ${srcdir}/${pkgname}-${pkgver}/src
+  sed -i '#BITBANG_BINARY=./bin/uisp_bbpg/BITBANG_BINARY=uisp-bbpg/g' avrusb500v2-1.5/Makefile
   echo ""
-  echo "avrusb500v2-1.5 directory has the new uisp-bbpg"
+  echo "Edited Makefile in avrusb500v2-1.5 to call uisp-bbpg which is installed in /usr/bin"
+  echo ""
+  cp ${srcdir}/${pkgname}-${pkgver}/src/uisp ${srcdir}/${pkgname}-${pkgver}
+  echo ""
+  echo "Insert your password to install uisp-bbpg /usr/bin"
+  echo ""
+  sudo mv ${srcdir}/${pkgname}-${pkgver}/src/uisp /usr/bin/${pkgnamewantedbin}
+  cp ${srcdir}/${pkgname}-${pkgver}/uisp ${srcdir}/${pkgname}-${pkgver}/src
