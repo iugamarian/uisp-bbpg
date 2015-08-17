@@ -49,7 +49,7 @@ echo ""
   cd ${srcdir}/..
   wget -c -P ${srcdir}/.. http://tuxgraphics.org/common/src2/article07052/avrusb500v2-1.5.tar.gz
   tar xfvz avrusb500v2-1.5.tar.gz
-  sed -i '#BITBANG_BINARY=./bin/uisp_bbpg/BITBANG_BINARY=uisp-bbpg/g' avrusb500v2-1.5/Makefile
+  sed -i '#BITBANG_BINARY=.\/bin\/uisp_bbpg\/BITBANG_BINARY=uisp-bbpg/g' avrusb500v2-1.5/Makefile
   echo ""
   echo "Edited Makefile in avrusb500v2-1.5 to call uisp-bbpg which is installed in /usr/bin"
   echo ""
