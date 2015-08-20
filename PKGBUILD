@@ -40,18 +40,18 @@ build() {
 # Avoid busses not used error by using it for no reason
   sed -i 's/busses = usb_get_busses();/busses = usb_get_busses();\n  for (busses = usb_busses; busses; busses = busses->next)\n{\n}\n  busses = usb_get_busses();/g' ${srcdir}/${pkgname}-${pkgver}/src/ftdibb.c
   export CXXFLAGS="-g -Wall -O2 -Wno-narrowing -Wno-unused-result"
-  ./configure --prefix=/usr --mandir=/usr/share/man
+  ./configure --prefix=/usr --mandir=/usr/share/man --with-program-name=uisp_bbpg
   make || return 1
   cd ${srcdir}/..
   wget -c -P ${srcdir}/.. http://tuxgraphics.org/common/src2/article07052/avrusb500v2-1.5.tar.gz
   tar xfvz avrusb500v2-1.5.tar.gz
-  sed -i '#BITBANG_BINARY=.\/bin\/uisp_bbpg\/BITBANG_BINARY=uisp-bbpg/g' avrusb500v2-1.5/Makefile
-  echo ""
-  echo "Edited Makefile in avrusb500v2-1.5 to call uisp-bbpg which is installed in /usr/bin"
-  echo ""
-  cp ${srcdir}/${pkgname}-${pkgver}/src/uisp ${srcdir}/${pkgname}-${pkgver}
-  mv ${srcdir}/${pkgname}-${pkgver}/src/uisp /usr/bin/${pkgnamewantedbin}
-  cp ${srcdir}/${pkgname}-${pkgver}/uisp ${srcdir}/${pkgname}-${pkgver}/src
+  #sed -i '#BITBANG_BINARY=.\/bin\/uisp_bbpg\/BITBANG_BINARY=uisp-bbpg/g' avrusb500v2-1.5/Makefile
+  #echo ""
+  #echo "Edited Makefile in avrusb500v2-1.5 to call uisp-bbpg which is installed in /usr/bin"
+  #echo ""
+  #cp ${srcdir}/${pkgname}-${pkgver}/src/uisp ${srcdir}/${pkgname}-${pkgver}
+  #mv ${srcdir}/${pkgname}-${pkgver}/src/uisp /usr/bin/${pkgnamewantedbin}
+  #cp ${srcdir}/${pkgname}-${pkgver}/uisp ${srcdir}/${pkgname}-${pkgver}/src
 }
 
 package() {
@@ -60,24 +60,24 @@ package() {
 #  cp ${srcdir}/${pkgname}-${pkgver}/src/uisp ${srcdir}/${pkgname}-${pkgver}
 #  mv ${srcdir}/${pkgname}-${pkgver}/src/uisp /usr/bin/${pkgnamewantedbin}
 #  cp ${srcdir}/${pkgname}-${pkgver}/uisp ${srcdir}/${pkgname}-${pkgver}/src
-  echo ""
-  echo "Installed as /usr/bin/${pkgnamewantedbin}. Do not install the package."
-  echo ""
-  echo "Installed as /usr/bin/${pkgnamewantedbin}. Do not install the package."
+#  echo ""
+#  echo "Installed as /usr/bin/${pkgnamewantedbin}. Do not install the package."
+#  echo ""
+#  echo "Installed as /usr/bin/${pkgnamewantedbin}. Do not install the package."
 
-  echo ""
-  echo "Installed as /usr/bin/${pkgnamewantedbin}. Do not install the package."
-  echo ""
-  echo "You can now program the programmer:"
-  echo ""
-  echo "cd avrusb500v2-1.5"
-  echo ""
-  echo "Connect the programmer to a usb port."
-  echo ""
-  echo "Repeat the make commands a few times if they give errors:"
-  echo ""
-  echo "sudo make rdfuse"
-  echo ""
-  echo "sudo make load_pre"
-  echo ""
+#  echo ""
+#  echo "Installed as /usr/bin/${pkgnamewantedbin}. Do not install the package."
+#  echo ""
+#  echo "You can now program the programmer:"
+#  echo ""
+#  echo "cd avrusb500v2-1.5"
+#  echo ""
+#  echo "Connect the programmer to a usb port."
+#  echo ""
+#  echo "Repeat the make commands a few times if they give errors:"
+#  echo ""
+#  echo "sudo make rdfuse"
+#  echo ""
+#  echo "sudo make load_pre"
+#  echo ""
 }
