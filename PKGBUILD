@@ -9,7 +9,7 @@ pkgdesc="A tool for AVR which can interface to many hardware in-system programme
 arch=('i686' 'x86_64' 'armv6h' 'armv7h')
 url="http://savannah.nongnu.org/projects/uisp/"
 license=('GPL')
-depends=('gcc-libs' 'wget' 'libusb')
+depends=('gcc-libs' 'wget' 'libusb' 'libusb-compat')
 
 source=(http://ftp.de.debian.org/debian/pool/main/u/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz )
 md5sums=('b1e499d5a1011489635c1a0e482b1627')
@@ -46,38 +46,9 @@ build() {
   wget -c -P ${srcdir}/.. http://tuxgraphics.org/common/src2/article07052/avrusb500v2-1.5.tar.gz
   tar xfvz avrusb500v2-1.5.tar.gz
   #sed -i '#BITBANG_BINARY=.\/bin\/uisp_bbpg\/BITBANG_BINARY=uisp-bbpg/g' avrusb500v2-1.5/Makefile
-  #echo ""
-  #echo "Edited Makefile in avrusb500v2-1.5 to call uisp-bbpg which is installed in /usr/bin"
-  #echo ""
-  #cp ${srcdir}/${pkgname}-${pkgver}/src/uisp ${srcdir}/${pkgname}-${pkgver}
-  #mv ${srcdir}/${pkgname}-${pkgver}/src/uisp /usr/bin/${pkgnamewantedbin}
-  #cp ${srcdir}/${pkgname}-${pkgver}/uisp ${srcdir}/${pkgname}-${pkgver}/src
 }
 
 package() {
   cd ${srcdir}/${pkgname}-${pkgver}
   make install DEST_DIR=${pkgdir}
-#  cp ${srcdir}/${pkgname}-${pkgver}/src/uisp ${srcdir}/${pkgname}-${pkgver}
-#  mv ${srcdir}/${pkgname}-${pkgver}/src/uisp /usr/bin/${pkgnamewantedbin}
-#  cp ${srcdir}/${pkgname}-${pkgver}/uisp ${srcdir}/${pkgname}-${pkgver}/src
-#  echo ""
-#  echo "Installed as /usr/bin/${pkgnamewantedbin}. Do not install the package."
-#  echo ""
-#  echo "Installed as /usr/bin/${pkgnamewantedbin}. Do not install the package."
-
-#  echo ""
-#  echo "Installed as /usr/bin/${pkgnamewantedbin}. Do not install the package."
-#  echo ""
-#  echo "You can now program the programmer:"
-#  echo ""
-#  echo "cd avrusb500v2-1.5"
-#  echo ""
-#  echo "Connect the programmer to a usb port."
-#  echo ""
-#  echo "Repeat the make commands a few times if they give errors:"
-#  echo ""
-#  echo "sudo make rdfuse"
-#  echo ""
-#  echo "sudo make load_pre"
-#  echo ""
 }
