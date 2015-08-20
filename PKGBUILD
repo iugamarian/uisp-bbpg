@@ -38,9 +38,6 @@ build() {
   export CXXFLAGS="-g -Wall -O2 -Wno-narrowing -Wno-unused-result"
   ./configure --prefix=/usr --mandir=/usr/share/man --program-transform-name='s/uisp/uisp_bbpg/g'
   make || return 1
-  cd "${srcdir}/.."
-  wget -c -P ${srcdir}/.. http://tuxgraphics.org/common/src2/article07052/avrusb500v2-1.5.tar.gz
-  tar xfvz avrusb500v2-1.5.tar.gz
 }
 
 package() {
