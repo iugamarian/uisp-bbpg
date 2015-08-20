@@ -49,7 +49,7 @@ build() {
 }
 
 package() {
-  "cd ${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
   echo "${pkgdir}"
   make DESTDIR="${pkgdir}" install
 }
