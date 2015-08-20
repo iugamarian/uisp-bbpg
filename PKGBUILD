@@ -15,7 +15,7 @@ source=(http://ftp.de.debian.org/debian/pool/main/u/${pkgname}/${pkgname}_${pkgv
 md5sums=('b1e499d5a1011489635c1a0e482b1627')
 
 build() {
-  cd ${srcdir}
+  cd "${srcdir}"
   rm -rf extractpatches
   wget -c -P ${srcdir}/.. http://http.debian.net/debian/pool/main/u/uisp/uisp_20050207-4.2.diff.gz
   wget -c -P ${srcdir}/.. http://www.tuxgraphics.org/common/src2/article07052/uisp-20050207-usb-bbpg-patch.txt
@@ -23,15 +23,15 @@ build() {
   cp ../uisp_20050207.orig.tar.gz ${srcdir}/extractpatches
   cp ../uisp_20050207-4.2.diff.gz ${srcdir}/extractpatches
   cp ../uisp-20050207-usb-bbpg-patch.txt ${srcdir}/extractpatches
-  cd ${srcdir}/extractpatches
+  cd "${srcdir}/extractpatches"
   tar xfvz uisp_20050207.orig.tar.gz
   gunzip uisp_20050207-4.2.diff.gz
-  cd ${srcdir}/extractpatches/${pkgname}-${pkgver}
+  cd "${srcdir}/extractpatches/${pkgname}-${pkgver}"
   patch -p1 -i ../uisp_20050207-4.2.diff
 # The 10 Debian patch is  different from the others, maybe needs to be the same
 #  sed -i 's/--- uisp\/src\/Avr.h/--- uisp-20050207~\/src\/Avr.h/g' ${srcdir}/extractpatches/${pkgname}-${pkgver}/debian/patches/10_const_char.dpatch
 #  sed -i 's/+++ uisp\/src\/Avr.h.new/+++ uisp-20050207\/src\/Avr.h/g' ${srcdir}/extractpatches/${pkgname}-${pkgver}/debian/patches/10_const_char.dpatch
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd "${srcdir}/${pkgname}-${pkgver}"
   patch -p1 -i ${srcdir}/extractpatches/${pkgname}-${pkgver}/debian/patches/10_const_char.dpatch || return 1
   patch -p1 -i ${srcdir}/extractpatches/${pkgname}-${pkgver}/debian/patches/20_fix_manpage.dpatch || return 1
   patch -p1 -i ${srcdir}/extractpatches/${pkgname}-${pkgver}/debian/patches/30_fix_g++_4.3.dpatch || return 1
@@ -42,13 +42,14 @@ build() {
   export CXXFLAGS="-g -Wall -O2 -Wno-narrowing -Wno-unused-result"
   ./configure --prefix=/usr --mandir=/usr/share/man --with-program-name=uisp_bbpg
   make || return 1
-  cd ${srcdir}/..
+  cd "${srcdir}/.."
   wget -c -P ${srcdir}/.. http://tuxgraphics.org/common/src2/article07052/avrusb500v2-1.5.tar.gz
   tar xfvz avrusb500v2-1.5.tar.gz
   #sed -i '#BITBANG_BINARY=.\/bin\/uisp_bbpg\/BITBANG_BINARY=uisp-bbpg/g' avrusb500v2-1.5/Makefile
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
-  make install DEST_DIR=${pkgdir}
+  "cd ${srcdir}/${pkgname}-${pkgver}"
+  echo "${pkgdir}"
+  make DESTDIR="${pkgdir}" install
 }
