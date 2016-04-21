@@ -14,6 +14,11 @@ echo ""
   mkdir ${srcdir}
   cd ${srcdir}
   rm -rf extractpatches
+# Installing required build-dep for uisp:
+  echo ""
+  echo "Insert your password to install build-dep for uisp"
+  echo ""
+  sudo apt-get build-dep -y uisp
   wget -c -P ${srcdir}/.. http://ftp.de.debian.org/debian/pool/main/u/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz
   wget -c -P ${srcdir}/.. http://http.debian.net/debian/pool/main/u/uisp/uisp_20050207-4.2.diff.gz
   wget -c -P ${srcdir}/.. http://www.tuxgraphics.org/common/src2/article07052/uisp-20050207-usb-bbpg-patch.txt
@@ -41,7 +46,7 @@ echo ""
   echo "Insert your password to install required libusb libraries"
   echo ""
   sudo apt-get install -y libusb-dev libusb-1.0-0-dev
-# Avoid busses not used error by using it for no reason
+# Avoid busses not used error by using it for no reason, program still working after (__attribute__((unused)) or (void) not working)
   sed -i 's/busses = usb_get_busses();/busses = usb_get_busses();\n  for (busses = usb_busses; busses; busses = busses->next)\n{\n}\n  busses = usb_get_busses();/g' ${srcdir}/${pkgname}-${pkgver}/src/ftdibb.c
   export CXXFLAGS="-g -Wall -O2 -Wno-narrowing -Wno-unused-result"
   ./configure --prefix=/usr --mandir=/usr/share/man
@@ -49,7 +54,7 @@ echo ""
   cd ${srcdir}/..
   wget -c -P ${srcdir}/.. http://tuxgraphics.org/common/src2/article07052/avrusb500v2-1.5.tar.gz
   tar xfvz avrusb500v2-1.5.tar.gz
-  sed -i '#BITBANG_BINARY=.\/bin\/uisp_bbpg\/BITBANG_BINARY=uisp-bbpg/g' avrusb500v2-1.5/Makefile
+  sed -i 's/BITBANG_BINARY=.\/bin\/uisp_bbpg/BITBANG_BINARY=uisp-bbpg/g' avrusb500v2-1.5/Makefile
   echo ""
   echo "Edited Makefile in avrusb500v2-1.5 to call uisp-bbpg which is installed in /usr/bin"
   echo ""
@@ -72,4 +77,3 @@ echo ""
   echo ""
   echo "sudo make load_pre"
   echo ""
-  
